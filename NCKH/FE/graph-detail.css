@@ -1,0 +1,32 @@
+.empty-result[hidden],.result-done[hidden],.knowledge-graph-list[hidden],.kg-empty-state[hidden],#kgDetailLink[hidden]{display:none!important}
+.knowledge-graph-card .kg-empty-state{display:grid;gap:5px;padding:22px 4px 16px;text-align:center;font-size:13px}
+.kg-empty-state span{color:var(--muted);font-size:12px;line-height:1.55}
+.knowledge-graph-list{display:grid;gap:9px;margin:15px 0 13px}
+.knowledge-graph-list>div{display:grid;grid-template-columns:minmax(88px,.8fr) minmax(0,1.2fr);gap:10px;font-size:12px;line-height:1.5}
+.knowledge-graph-list dt{color:var(--muted)}
+.knowledge-graph-list dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.processing-steps-value{white-space:pre-line}
+.kg-detail-link{display:inline-flex;align-items:center;color:var(--green);font-size:13px;font-weight:700;text-decoration:none}
+.kg-detail-link:hover{text-decoration:underline}
+
+/* Let the Graph card use the full height alongside the camera preview. */
+.workspace{container-type:inline-size;align-items:start}
+.result-column{grid-template-rows:auto minmax(0,1fr);height:min(calc(39.84375cqw - 8.765625px),calc(56.25cqw - 181.125px));min-height:0;overflow:hidden}
+.knowledge-graph-card{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.knowledge-graph-card .card-title{flex:0 0 auto}
+.knowledge-graph-list{flex:1 1 auto;min-height:0;overflow:hidden}
+.knowledge-graph-card .kg-detail-link{flex:0 0 auto;margin-top:auto;padding-top:10px}
+@media(max-width:760px){.result-column{height:auto;min-height:0}.knowledge-graph-card{min-height:300px}}
+.graph-detail-heading{align-items:flex-start}
+.graph-back-link{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--green);font-size:23px;text-decoration:none}
+.graph-detail-card{max-width:900px;margin:0 auto}
+.graph-detail-card h2{margin:0 0 7px;font-size:20px;overflow-wrap:anywhere}
+.graph-detail-status{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.6}
+.graph-detail-fields,.graph-nested-fields{display:grid;grid-template-columns:minmax(130px,.65fr) minmax(0,1.35fr);margin:0;border-top:1px solid var(--line)}
+.graph-detail-fields>dt,.graph-detail-fields>dd,.graph-nested-fields>dt,.graph-nested-fields>dd{margin:0;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.graph-detail-fields>dt,.graph-nested-fields>dt{color:var(--muted);font-weight:600}
+.graph-value-list{margin:0;padding-left:20px}
+.graph-value-list li+li{margin-top:6px}
+.graph-nested-fields{grid-column:1/-1;margin-top:7px;border-top:0;border-left:2px solid var(--line)}
+.graph-nested-fields>dt,.graph-nested-fields>dd{font-size:12px}
+@media(max-width:600px){.graph-detail-fields,.graph-nested-fields{grid-template-columns:minmax(90px,.7fr) minmax(0,1.3fr)}.graph-detail-fields>dt,.graph-detail-fields>dd,.graph-nested-fields>dt,.graph-nested-fields>dd{padding:9px 6px;font-size:12px}}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phân loại rác bằng AI | SmartDisposal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="camera.css" />
+    <link rel="stylesheet" href="camera-overrides.css" />
+    <link rel="stylesheet" href="graph-detail.css" />
+    <script src="../constants.js" defer></script>
+    <script src="camera.js" defer></script>
+    <script src="graph-card.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="page-heading">
+        <span class="material-symbols-outlined">videocam</span>
+        <div><p class="eyebrow">Chủ đề môi trường</p><h1>Phân loại rác thải bằng AI</h1></div>
+      </section>
+      <section id="welcomeView" class="welcome-view">
+        <p class="welcome-copy">Sử dụng camera thiết bị để nhận diện rác ngay lập tức và nhận hướng dẫn bỏ rác phù hợp.</p>
+        <div class="start-card">
+          <div class="start-icon"><span class="material-symbols-outlined">photo_camera</span></div>
+          <h2>Chụp ảnh trực tiếp</h2><p>Đưa vật thể vào khung hình, sau đó chụp ảnh để AI phân loại.</p>
+          <button id="btnStartCamera" class="button button-primary" type="button"><span class="material-symbols-outlined">videocam</span>Kích hoạt camera</button>
+        </div>
+      </section>
+      <section id="cameraView" class="camera-view" hidden>
+        <div class="workspace">
+          <div class="camera-column">
+            <div id="cameraBox" class="camera-box">
+              <div class="camera-status"><span id="cameraStateDot"></span><span id="cameraStateText">Camera đang khởi động</span></div>
+              <video id="camVideo" autoplay playsinline muted></video>
+              <div id="cameraIdleState" class="camera-placeholder"><span class="material-symbols-outlined">videocam_off</span><p>Camera chưa sẵn sàng</p></div>
+            </div>
+            <div class="camera-actions"><button id="btnCapture" class="button button-primary" type="button" disabled><span class="material-symbols-outlined">photo_camera</span>Chụp ảnh</button><button id="btnStopCamera" class="button button-danger" type="button"><span class="material-symbols-outlined">videocam_off</span>Tắt camera</button></div>
+          </div>
+          <aside class="result-column">
+            <article class="info-card">
+              <div class="card-title"><span class="material-symbols-outlined">auto_awesome</span><h2>Kết quả nhận diện</h2></div>
+              <div id="resultIdle" class="empty-result"><strong id="resultStatusText">Đang chờ nhận diện...</strong><span>Đưa vật thể vào khung hình</span></div>
+              <div id="resultDone" class="result-done" hidden><strong id="resultLabel">—</strong><p id="resultBinHint">—</p><p>Độ tin cậy: <b id="resultConfidence">—</b></p><a id="resultDetailLink" href="#" hidden>Xem chi tiết kết quả <span class="material-symbols-outlined">arrow_forward</span></a></div>
+            </article>
+            <article id="knowledgeGraphData" class="info-card knowledge-graph-card" hidden>
+              <div class="card-title"><span class="material-symbols-outlined">account_tree</span><h2>Tri thức phân loại</h2></div>
+              <div id="kgEmptyState" class="kg-empty-state">
+                <strong id="kgStatusTitle">Chưa có dữ liệu</strong>
+                <span id="kgStatusMessage">Đưa rác vào trước camera, chụp ảnh để xem tri thức phân loại.</span>
+              </div>
+              <dl id="kgSummary" class="knowledge-graph-list" hidden></dl>
+              <a id="kgDetailLink" class="kg-detail-link" href="graph-detail.html" hidden>Xem chi tiết →</a>
+            </article>
+          </aside>
+        </div>
+        <section class="bins-section">
+          <div class="section-title"><span class="material-symbols-outlined">delete</span><h2>Các loại thùng rác</h2><span>Phân loại rác đúng cách</span></div>
+          <div class="bins-grid">
+            <article class="bin-card recycle"><span>Tái chế</span><i class="material-symbols-outlined">autorenew</i><h3>Thùng rác tái chế</h3><p>Giấy, lon, chai nhựa, thủy tinh và các vật liệu có thể tái chế.</p></article>
+            <article class="bin-card organic"><span>Hữu cơ</span><i class="material-symbols-outlined">eco</i><h3>Thùng rác hữu cơ</h3><p>Thức ăn thừa, rau củ quả, lá cây và vật liệu dễ phân hủy.</p></article>
+            <article class="bin-card other"><span>Còn lại</span><i class="material-symbols-outlined">delete_sweep</i><h3>Thùng rác còn lại</h3><p>Túi nilon, hộp xốp, sành sứ và rác không tái chế được.</p></article>
+          </div>
+        </section>
+      </section>
+    </main>
+    <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrashSmart — Kết quả phân loại</title>
+  <meta name="description" content="Kết quả phân loại chất liệu rác từ AI ResNet50" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400..700,0..1,0&display=swap" rel="stylesheet" />
+  <script src="constants.js"></script>
+  <script src="iot-result.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-body: #f4fbf7;
+      --bg-card: #ffffff;
+      --text-main: #1e3932;
+      --text-muted: #5e7a71;
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --primary-bg: #e8f5e9;
+      --accent: #8bc34a;
+      --border: #c8e6c9;
+      --shadow: rgba(46, 125, 50, 0.08);
+      --danger: #ef5350;
+      --warning: #ffb300;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      background-image: radial-gradient(circle at top right, #e8f5e9 0%, transparent 40%),
+                        radial-gradient(circle at bottom left, #f1f8e9 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    h1, h2, h3, .brand-text {
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 10px var(--shadow);
+    }
+    .btn-back:hover {
+      background: var(--primary-bg);
+      transform: translateX(-4px);
+    }
+    
+    .tag {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    /* States */
+    .state-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .state-panel.hidden { display: none !important; }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 50px 30px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(46, 125, 50, 0.08), 0 1px 3px rgba(0,0,0,0.02);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Decoration inside card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+    }
+
+    /* Icons */
+    .icon-large {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .icon-large .material-symbols-rounded { font-size: 50px; }
+    
+    .icon-loading {
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+    .icon-loading .material-symbols-rounded {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .icon-error {
+      background: #ffebee;
+      color: var(--danger);
+    }
+
+    .icon-success {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: white;
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+      position: relative;
+    }
+    /* Floating animation for result icon */
+    .icon-success {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Typography */
+    .card-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Primary Button */
+    .btn-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 35px;
+      padding: 15px 35px;
+      border-radius: 16px;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25);
+    }
+    .btn-main:hover {
+      background: #1b5e20;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(46, 125, 50, 0.3);
+    }
+    
+    .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-rounded.outline {
+      font-variation-settings: 'FILL' 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <header class="header" style="justify-content: center;">
+      <div class="tag">Kết Quả ResNet50</div>
+    </header>
+
+    <!-- Loading State -->
+    <section id="loadingState" class="state-panel">
+      <div class="card">
+        <div class="icon-large icon-loading">
+          <span class="material-symbols-rounded outline">hourglass_empty</span>
+        </div>
+        <h1 class="card-title">Đang xử lý...</h1>
+        <p class="card-desc">AI đang phân tích chất liệu rác, vui lòng đợi trong giây lát.</p>
+      </div>
+    </section>
+
+    <!-- Result State -->
+    <section id="resultState" class="state-panel hidden">
+      <div class="card">
+        <div class="icon-large icon-success">
+          <span id="binIcon" class="material-symbols-rounded">delete</span>
+        </div>
+        <!-- Note: We removed the image element here as requested -->
+        <div style="font-size: 13px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Thùng Rác Tương Ứng</div>
+        <h1 id="materialName" class="card-title" style="font-size: 40px; color: var(--primary);">--</h1>
+        <p id="resultNote" class="card-desc">Hệ thống đã nhận diện xong và mở nắp thùng phù hợp để bảo vệ môi trường.</p>
+      </div>
+    </section>
+
+    <!-- Error State -->
+    <section id="errorState" class="state-panel hidden">
+      <div class="card" style="border-color: #ffcdd2;">
+        <div class="icon-large icon-error">
+          <span class="material-symbols-rounded outline">error</span>
+        </div>
+        <h1 class="card-title">Đã xảy ra lỗi</h1>
+        <p id="errorText" class="card-desc">Không thể nhận diện chất liệu. Vui lòng thử lại.</p>
+
+      </div>
+    </section>
+  </div>
+</body>
+
+</html>

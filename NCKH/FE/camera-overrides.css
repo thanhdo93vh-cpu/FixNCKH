@@ -1,0 +1,86 @@
+body { 
+  background: #f8faf8; 
+}
+
+body[data-page="camera"] .app-shell { 
+  width: min(1280px, calc(100% - 32px)); 
+}
+
+body[data-page="camera"] .workspace { 
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, .7fr); 
+  gap: 22px; 
+}
+
+body[data-page="camera"] .camera-box { 
+  position: relative;
+  width: 100%; 
+  aspect-ratio: 16 / 9; 
+  overflow: hidden;
+  background: #101d2a;
+  border-radius: 12px;
+}
+
+/* Lật gương đồng bộ cả Video Live và Canvas */
+body[data-page="camera"] .camera-box video,
+body[data-page="camera"] .camera-box canvas { 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); 
+}
+
+/* Thẻ Canvas chứa Bounding Box trong suốt nằm đè lên Video */
+body[data-page="camera"] .camera-box canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none; /* Tránh cản trở tương tác người dùng */
+  background: transparent !important;
+}
+
+body[data-page="camera"] .camera-status {
+  z-index: 3 !important;
+}
+
+body[data-page="camera"] .camera-actions { 
+  padding-bottom: 12px; 
+}
+
+body[data-page="camera"] .result-column { 
+  grid-template-columns: 1fr; 
+}
+
+/* Đèn LED thùng rác */
+.bin-led { 
+  position: absolute; 
+  top: 15px; 
+  right: 15px; 
+  width: 13px; 
+  height: 13px; 
+  border-radius: 50%; 
+  background: #b9c6c0; 
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px #95a69e; 
+  transition: background .25s, box-shadow .25s, transform .25s; 
+}
+
+.bin-card.is-lit { 
+  border-color: #56bd83; 
+  background: #f5fff9; 
+  box-shadow: 0 0 0 2px #bcebd0, 0 10px 22px #2377531f; 
+}
+
+.bin-card.is-lit .bin-led { 
+  background: #36dd7b; 
+  transform: scale(1.16); 
+  box-shadow: 0 0 0 2px #fff, 0 0 13px 4px #36dd7b; 
+  animation: ledPulse 1.15s ease-in-out infinite; 
+}
+
+@keyframes ledPulse { 
+  50% { box-shadow: 0 0 0 2px #fff, 0 0 19px 7px #36dd7b; } 
+}
+
+@media (max-width: 760px) {
+  body[data-page="camera"] .camera-box { aspect-ratio: 4 / 3; }
+  body[data-page="camera"] .result-column { grid-template-columns: 1fr; }
+}

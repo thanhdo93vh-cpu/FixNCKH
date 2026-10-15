@@ -1,0 +1,16 @@
+# torch/torchvision are installed separately in Dockerfile.
+
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+requests
+cloudinary
+
+
+opencv-python-headless
+numpy
+Pillow
+tqdm
+
+
